@@ -1,2 +1,2 @@
 # profile-matching
-web development DSS with profile matching method and include feature like data cleaning and data visualization without database
+Decision Support System use profile matching method without database and include feature like data cleaning and data visualization
