@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Profile Matching Method</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="./css/jquery.dataTables_1.12.1.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="./FrameworkJS/jquery.dataTables_1.10.16.js"></script>
+    <script src="./FrameworkJS/sweetAlert.js"></script>
+    <script src="./FrameworkJS/sweetAlert2.js"></script>
+    <link rel="stylesheet" href="css/ownStyle.css">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center mt-4 mb-4">Profile Matching Method</h2>
+        <div class="card">
+            <div class="card-header"><b>Select Excel File</b></div>
+            <div class="card-body">
+                <form class="input-group" enctype="multipart/form-data">
+                    <input class="form-control" type="file" id="excel_file" name="sFile" onchange="controlFile(this)" />
+                    <input class="btn btn-outline-secondary" type="button" value="Restart project"
+                        onclick="restartProject()">
+                </form>
+            </div>
+        </div>
+
+        <div id="excel_data" class="mt-5"></div>
+
+        <div class="card mt-4" id="card_index">
+            <div class="card-header" id="card_header_index"><b>Select Index Table</b></div>
+            <div class="card-body">
+                <select class="form-select" id="select_idx" onchange="disableIndex(this)">
+                    <option selected disabled value="">Choose index of table in this select menu</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="active-score-wrapper">
+            <div class="card mt-4" id="card_active">
+                <div class="card-header" id="card_header_activeC"><b>Active Columns</b></div>
+                <div class="card-body height-cb" id="container_checkbox">
+                    <input class='form-check-input' type='checkbox' id='flexCheckChecked' style="display: none;"
+                        disabled />
+                    <!-- input of checkbox type will be here -->
+                </div>
+            </div>
+
+            <div class="card mt-4" id="card_score">
+                <div class="card-header" id="card_header_score"><b>Convert Data Into Score</b></div>
+                <div class="card-body height-cb" id="container_score">
+                    <!-- input of checkbox type will be here -->
+                    <h3 class="text-center mt-4 mb-4" style="display: block;">Choose Column in Active Column</h2>
+
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary mx-auto mt-4 col-6" id="btnShowCleanData"
+                onclick="makeCleanDataValidation()">Show Clean Data Table</button>
+        </div>
+
+        <div id="clean_data" class="mt-5"></div>
+
+        <div class="active-score-wrapper">
+            <div class="card my-4" id="card_criteriaTotal">
+                <div class="card-header" id="card_header_criteriaTotal"><b>Total of Criteria</b></div>
+                <div class="card-body">
+                    <input class="form-control col-6" type="number" id="criteria_total" name="criteriaTotal" placeholder="Enter the total"
+                        onchange="showCriteriaCard(this)" />
+                </div>
+            </div>
+            <div class="card my-4" id="card_columnList">
+                <div class="card-header" id="card_header_columnList"><b>List of Column</b></div>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="criteria-wrapper d-flex" id="criteria_wrapper"></div>
+
+
+    </div>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/dirtyDataTable.js"></script>
+    <script src="./js/selectIndexStep.js"></script>
+    <script src="./js/convertDataStep.js"></script>
+    <script src="./js/activeColumnStep.js"></script>
+    <script src="./js/preprocessSupport.js"></script>
+    <script src="./js/cleanDataTable.js"></script>
+    <script src="./js/validationCleanDataTable.js"></script>
+    <script src="./js/sweetAlertController.js"></script>
+
+    <script src="./jsPM/criteria.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+        function getValue() {
+            var fd = new FormData();
+            fd.append('sFile', excel_file.files[0]);
+
+            $.ajax({
+                url: 'storedFile.php',
+                data: fd,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+        }
+
+
+
+        // buttontest.addEventListener('click', () => {
+        //     console.log(newData);
+        //     console.log(actual_sheet_data);
+        //     location.reload();
+
+        // });
+
+    </script>
+
+</body>
+
+</html>

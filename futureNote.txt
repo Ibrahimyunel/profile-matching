@@ -1,0 +1,54 @@
+readFileLink();
+        async function readFileLink() {
+            // var ls = JSON.stringify(event.target.files[0]);
+            // localStorage.setItem('filename', ls);
+            let response = await fetch('http://localhost:8080/displayTable/Book1.xlsx');
+            let responseData = await response.blob();
+            console.log(responseData);
+
+
+
+
+            if (!['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(responseData.type)) {
+                document.getElementById('excel_data').innerHTML = '<div class="alert alert-danger">Only .xlsx or .xls file format are allowed</div>';
+
+                excel_file.value = '';
+
+                return false;
+            }
+
+            var reader = await new FileReader();
+
+            reader.readAsArrayBuffer(responseData);
+
+            reader.onload = async function () {
+
+                var data = new Uint8Array(reader.result);
+
+                var work_book = XLSX.read(data, { type: 'array' });
+
+                var sheet_name = work_book.SheetNames;
+
+                actual_sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]], { header: 1 });
+
+                var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]], { header: 1 });
+
+                console.log(columnsName);
+
+                var dataSort = transpose(sheet_data);
+
+                newData = pickDataOnce(dataSort);
+
+                breakdown(sheet_data);
+
+                // sheet_data[0].fill("((((((((((0))))))))))");
+
+                card_index.style.display = "block";
+                card_active.style.display = "block";
+                card_score.style.display = "block";
+                buttontest.style.display = "block";
+
+                convertValue(newData);
+
+            }
+        }

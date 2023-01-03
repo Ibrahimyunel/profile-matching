@@ -1,0 +1,54 @@
+/* for dirtyData and preprocessStep */
+div.table, table.table {
+    --bs-table-striped-bg: rgb(205, 236, 238);
+    border-color: rgb(205, 236, 238);
+}
+
+.card {
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+}
+
+.newWrapperClass {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.active-score-wrapper {
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.card-body {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.height-cb {
+    height: 60vh;
+}
+
+.form-check-label {
+    padding-right: 3em;
+}
+
+/* for convertDataStep.php */
+.convert-wrapper {
+    display: grid;
+    grid-template-columns: 9em auto;
+    gap: 0.5em;
+}
+
+input.convert-input {
+    text-align: center;
+    width: 7em;
+    margin: 0 0 1.5em 2em;
+}
+
+/* asdfsdfsdfsf */
+input[checked=true]+label:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
