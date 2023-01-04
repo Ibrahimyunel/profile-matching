@@ -63,10 +63,12 @@ function cleanDataTable(sheet_data) {
             alert(dataTable.cell(this).index().column);
         });
     });
-    cleanData.scrollIntoView(true);
+    
     checkedTrue.splice(0, 1);
     card_criteriaTotal.style.display = 'block';
     card_columnList.style.display = 'block';
+    // card_criteriaTotal.scrollIntoView(true);
+    card_criteriaTotal.lastElementChild.children[0].focus();
     showColumnList();
 }
 

@@ -52,3 +52,17 @@ input[checked=true]+label:hover {
     cursor: pointer;
 }
 
+.criteria-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+}
+
+.criteria-name {
+    border: unset;
+    border-bottom: 1px solid #ced4da;;
+    font-weight: bold;
+}
+/* .criteria-item {
+    flex: 1 1 25%;
+} */
+

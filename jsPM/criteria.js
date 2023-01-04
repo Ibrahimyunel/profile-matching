@@ -17,13 +17,16 @@ function showColumnList() {
 function showCriteriaCard(target) {
     var criteria = "";
     for (var i = 0; i < target.value; i++) {
-        criteria += `<div class="card my-4" id="criteria_${i}">
-                            <div class="card-header" id="card_header_columnList"><b>List of Column ${i}</b></div>
+        criteria += `<div class="criteria-item card mt-4" id="criteria_${i}">
+                            <div class="card-header" id="card_header_columnList">
+                                <input class="criteria-name form-control" type="text" id="criteria_name${i}" name="criteria_name" placeholder="Enter Criteria Name ${i+1}"/>
+                            </div>
                             <div class="card-body">
                             </div>
                         </div>`;
     }
     criteria_wrapper.innerHTML = criteria;
+    $("#criteria_name0").focus();
 }
 
 
