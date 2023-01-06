@@ -92,11 +92,13 @@ function controlHeader(sheet_data) {
             sheet_data[0][i] = "Column_" + (i + 1);
         }
     }
-    for (var i = 0; i < sheet_data[0].length; i++) {
-        if (sheet_data.indexOf(sheet_data[0][i]) !== sheet_data.lastIndexOf(sheet_data[0][i])) {
-            // const ages = [11, 32, 10, 32, 11, 12, 11, 40, 12];
-            // document.getElementById("demo").innerHTML = ages.filter((age, idx) => ages.indexOf(age) !== idx);
-            // //result : 21,11,11,12
+    for (var h = 0; h < sheet_data[0].length; h++) {
+        var addVal = 1;
+        for (var a = h + 1; a < sheet_data[0].length; a++) {
+            if (sheet_data[0][h] === sheet_data[0][a]) {
+                sheet_data[0][a] = sheet_data[0][a] + "_" + addVal;
+                addVal++;
+            }
         }
     }
 }
