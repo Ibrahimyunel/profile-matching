@@ -70,7 +70,16 @@ function makeCleanDataValidation() {
             card_header_score.removeAttribute("onclick");
             card_header_score.removeAttribute("style");
             cleanDataTable(sheet_data);
-            // selectIdx.focus();
+
+            card_criteriaTotal.style.display = 'block';
+            card_columnList.style.display = 'block';
+            card_criteriaTotal.lastElementChild.children[0].focus();
+            if (btnShowCleanData.firstChild.textContent === "Show") {
+                btnShowCleanData.firstChild.textContent = "Update";
+                showColumnList();
+            } else {
+                updateColumnList();
+            }
         }
     }
 }

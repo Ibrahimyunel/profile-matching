@@ -7,12 +7,24 @@ const criteria_rules = document.getElementById('criteria_rules');
 criteria_rules.style.display = "none";
 
 function showColumnList() {
-  var list = "<div class='list-group list-group-horizontal' ondrop='drop(event)' ondragover='allowDrop(event)' style='min-height:2.2em'>";
+  var list = "<div class='list-group list-group-horizontal' id='list_of_column' ondrop='drop(event)' ondragover='allowDrop(event)' style='min-height:2.2em'>";
   for (var i = 0; i < checkedTrue.length; i++) {
-    list += "<p class='list-group-item'  id='list_item_" + checkedTrue[i] + "' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[i] + "</p>";
+    list += "<p class='list-group-item'  id='list_"+checkedTrue[i]+"' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[i] + "</p>";
   }
   list += "</div>";
   card_columnList.lastElementChild.innerHTML = list;
+}
+
+function updateColumnList() {
+  for (var b = 0; b < checkedTrue.length; b++) {
+    var getli = document.querySelector("p#list_"+checkedTrue[b]);
+    var getParentli = document.getElementById("list_of_column");
+    if (getli === null) {
+      const addlist = document.createElement("div");
+      addlist.innerHTML = "<p class='list-group-item' id='list_"+checkedTrue[b]+"' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[b] + "</p>";
+      getParentli.appendChild(addlist.firstChild);
+    }
+  }
 }
 
 var oldVal;
@@ -56,11 +68,15 @@ function showCriteriaCard(target) {
 
 function listCriteria(target) {
   var targetS_factor = document.createElement("div");
-  targetS_factor.setAttribute('class', 'd-flex');
+  targetS_factor.setAttribute('class', 'targetS-factor');
   targetS_factor.setAttribute('id', `${target.id}_${list_id}`);
   targetS_factor.setAttribute('ondrop', 'unallowDrop(event)');
-  targetS_factor.innerHTML = `<p ondrop='unallowDrop(event)'>test</p>
-                              <p ondrop='unallowDrop(event)'>test2</p>`;
+  targetS_factor.innerHTML = `<select class="form-select" id="select_idx" onchange="disableIndex(this)" ondrop='unallowDrop(event)'>
+                              <option selected disabled value="">Choose Factor</option>
+                              <option value="">Core Factor</option>
+                              <option value="">Secondary Factor</option>
+                              </select>
+                              <input class='form-control' type='number' ondrop='unallowDrop(event)' placeholder='Target Score'/>`;
   target.appendChild(targetS_factor);
 }
 

@@ -65,11 +65,7 @@ function cleanDataTable(sheet_data) {
     });
     
     checkedTrue.splice(0, 1);
-    card_criteriaTotal.style.display = 'block';
-    card_columnList.style.display = 'block';
     // card_criteriaTotal.scrollIntoView(true);
-    card_criteriaTotal.lastElementChild.children[0].focus();
-    showColumnList();
 }
 
 // $(document).ready( function () {

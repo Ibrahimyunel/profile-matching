@@ -54,13 +54,18 @@ input[checked=true]+label:hover {
 
 .criteria-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(3, 33.33%);
 }
 
 .criteria-name {
     border: unset;
     border-bottom: 1px solid #ced4da;;
     font-weight: bold;
+}
+
+.targetS-factor {
+    display: grid;
+    grid-template-columns: auto auto;
 }
 /* .criteria-item {
     flex: 1 1 25%;
