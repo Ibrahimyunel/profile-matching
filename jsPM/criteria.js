@@ -56,7 +56,7 @@ function showCriteriaCard(target) {
                               <input class="criteria-name form-control" type="text" id="criteria_name${i}" name="criteria_name" placeholder="Enter Criteria Name ${i + 1}"/>
                           </div>
                           <div class="card-body">
-                            <div class="list-group" id="list_group_criteria_${i}" ondrop="listCriteria(this); drop(event)" ondragover="allowDrop(event)" style="min-height:8em">
+                            <div class="list-group" id="list_group_criteria_${i}" ondrop="listCriteria(event)" ondragover="allowDrop(event)" style="min-height:8em">
 
                             </div>
                           </div>`;
@@ -66,10 +66,10 @@ function showCriteriaCard(target) {
   $("#criteria_name0").focus();
 }
 
-function listCriteria(target) {
+function listCriteria(e) {
   var targetS_factor = document.createElement("div");
   targetS_factor.setAttribute('class', 'targetS-factor');
-  targetS_factor.setAttribute('id', `${target.id}_${list_id}`);
+  targetS_factor.setAttribute('id', `${e.target.id}_${list_id}`);
   targetS_factor.setAttribute('ondrop', 'unallowDrop(event)');
   targetS_factor.innerHTML = `<select class="form-select" id="select_idx" onchange="disableIndex(this)" ondrop='unallowDrop(event)'>
                               <option selected disabled value="">Choose Factor</option>
@@ -77,29 +77,28 @@ function listCriteria(target) {
                               <option value="">Secondary Factor</option>
                               </select>
                               <input class='form-control' type='number' ondrop='unallowDrop(event)' placeholder='Target Score'/>`;
-  target.appendChild(targetS_factor);
+  e.target.appendChild(targetS_factor);
+  drop(e);
 }
 
 var list_id;
 var prevSibling_id;
-function dragStart(event) {
-  event.dataTransfer.setData("list_id", event.target.id);
-  list_id = event.dataTransfer.getData("list_id");
-  if (event.target.previousElementSibling !== null) {
-    event.dataTransfer.setData("prevSibling_id", event.target.previousElementSibling.id);
-    prevSibling_id = event.dataTransfer.getData("prevSibling_id");
+function dragStart(e) {
+  e.dataTransfer.setData("list_id", e.target.id);
+  list_id = e.dataTransfer.getData("list_id");
+  if (e.target.previousElementSibling !== null) {
+    e.dataTransfer.setData("prevSibling_id", e.target.previousElementSibling.id);
+    prevSibling_id = e.dataTransfer.getData("prevSibling_id");
   }
-  
-
 }
 
-function drop(event) {
-  event.target.appendChild(document.getElementById(list_id));
+function drop(e) {
+  e.target.appendChild(document.getElementById(list_id));
   removeDiv();
 }
 
-function allowDrop(event) {
-  event.preventDefault();
+function allowDrop(e) {
+  e.preventDefault();
 }
 
 function unallowDrop(e) {
@@ -110,6 +109,7 @@ function removeDiv() {
   if(prevSibling_id !== undefined) {
     if(prevSibling_id.includes("list_group_criteria_")) {
       document.getElementById(prevSibling_id).remove();
+      prevSibling_id = undefined;
     }
   }
 }
