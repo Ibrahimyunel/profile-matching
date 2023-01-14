@@ -1,4 +1,4 @@
-/* for dirtyData and preprocessStep */
+/* for data cleaning */
 div.table, table.table {
     --bs-table-striped-bg: rgb(205, 236, 238);
     border-color: rgb(205, 236, 238);
@@ -33,7 +33,6 @@ div.table, table.table {
     padding-right: 3em;
 }
 
-/* for convertDataStep.php */
 .convert-wrapper {
     display: grid;
     grid-template-columns: 9em auto;
@@ -46,28 +45,61 @@ input.convert-input {
     margin: 0 0 1.5em 2em;
 }
 
-/* asdfsdfsdfsf */
 input[checked=true]+label:hover {
     font-weight: bold;
     cursor: pointer;
 }
 
+/* for PM criteria step */
 .criteria-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 33.33%);
 }
 
-.criteria-name {
-    border: unset;
-    border-bottom: 1px solid #ced4da;;
+.criteria-ch {
+    display: grid;
+    grid-template-columns: 67.5% 30%;
+    gap: 2.5%;
+}
+
+.criteria-ch-content {
+    border: 1px solid rgb(157, 161, 216);
     font-weight: bold;
 }
 
 .targetS-factor {
     display: grid;
     grid-template-columns: auto auto;
+    margin-top: 1em;
 }
-/* .criteria-item {
-    flex: 1 1 25%;
-} */
+
+.cb-criteria {
+    max-height: 24.5em;
+    padding: 0;
+}
+
+.list-criteria {
+    height: 100%;
+    min-height: 4.4em;
+    padding: 1rem;
+    padding-top: 0;
+    overflow-y: auto;
+    background-color: rgb(216, 218, 245);
+    border-radius: 0;
+}
+.lc-pt {
+    padding-top: 1rem;
+}
+
+.bc {
+    border-color: rgb(157, 161, 216);
+}
+
+.pd {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    margin-bottom: 0;
+}
+
+
 

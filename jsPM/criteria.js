@@ -7,9 +7,11 @@ const criteria_rules = document.getElementById('criteria_rules');
 criteria_rules.style.display = "none";
 
 function showColumnList() {
-  var list = "<div class='list-group list-group-horizontal' id='list_of_column' ondrop='drop(event)' ondragover='allowDrop(event)' style='min-height:2.2em'>";
+  var list = "<div class='list-group list-group-horizontal list-criteria lc-pt' id='list_of_column' ondrop='drop(event)' ondragover='allowDrop(event)'>";
   for (var i = 0; i < checkedTrue.length; i++) {
-    list += "<p class='list-group-item'  id='list_"+checkedTrue[i]+"' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[i] + "</p>";
+    var addstr = "";
+    if (checkedTrue[i].length > 25) addstr = "...";
+    list += "<p class='list-group-item text-center bc pd'  id='list_" + checkedTrue[i] + "' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[i].substr(0, 25) + addstr + "</p>";
   }
   list += "</div>";
   card_columnList.lastElementChild.innerHTML = list;
@@ -17,11 +19,13 @@ function showColumnList() {
 
 function updateColumnList() {
   for (var b = 0; b < checkedTrue.length; b++) {
-    var getli = document.querySelector("p#list_"+checkedTrue[b]);
+    var getli = document.querySelector("p#list_" + checkedTrue[b]);
     var getParentli = document.getElementById("list_of_column");
     if (getli === null) {
+      var addstr = "";
+      if (checkedTrue[b].length > 25) addstr = "...";
       const addlist = document.createElement("div");
-      addlist.innerHTML = "<p class='list-group-item' id='list_"+checkedTrue[b]+"' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[b] + "</p>";
+      addlist.innerHTML = "<p class='list-group-item text-center bc pd' id='list_" + checkedTrue[b] + "' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[b].substr(0, 25) + addstr + "</p>";
       getParentli.appendChild(addlist.firstChild);
     }
   }
@@ -50,13 +54,14 @@ function showCriteriaCard(target) {
   }
   for (var i = oldVal; i < target.value; i++) {
     var criteria = document.createElement("div");
-    criteria.setAttribute("class", "criteria-item card mt-4");
+    criteria.setAttribute("class", "card mb-4");
     criteria.setAttribute("id", `criteria_${i}`);
-    criteria.innerHTML = `<div class="card-header" id="card_header_columnList">
-                              <input class="criteria-name form-control" type="text" id="criteria_name${i}" name="criteria_name" placeholder="Enter Criteria Name ${i + 1}"/>
+    criteria.innerHTML = `<div class="card-header criteria-ch" id="card_header_columnList">
+                              <input class="form-control text-center criteria-ch-content" type="text" id="criteria_name${i}" name="criteria_name${i}" placeholder="Enter Criteria Name ${i + 1}"/>
+                              <input class="form-control text-center criteria-ch-content" type="number" id="criteria_weights${i}" name="criteria_weights${i}" placeholder="Weights"/>
                           </div>
-                          <div class="card-body">
-                            <div class="list-group" id="list_group_criteria_${i}" ondrop="listCriteria(event)" ondragover="allowDrop(event)" style="min-height:8em">
+                          <div class="card-body cb-criteria">
+                            <div class="list-group list-criteria" id="list_group_criteria_${i}" ondrop="listCriteria(event)" ondragover="allowDrop(event)">
 
                             </div>
                           </div>`;
@@ -71,12 +76,11 @@ function listCriteria(e) {
   targetS_factor.setAttribute('class', 'targetS-factor');
   targetS_factor.setAttribute('id', `${e.target.id}_${list_id}`);
   targetS_factor.setAttribute('ondrop', 'unallowDrop(event)');
-  targetS_factor.innerHTML = `<select class="form-select" id="select_idx" onchange="disableIndex(this)" ondrop='unallowDrop(event)'>
-                              <option selected disabled value="">Choose Factor</option>
-                              <option value="">Core Factor</option>
+  targetS_factor.innerHTML = `<select class="form-select form-select-sm bc" id="select_idx" onchange="disableIndex(this)" ondrop='unallowDrop(event)'>
+                              <option selected value="">Core Factor</option>
                               <option value="">Secondary Factor</option>
                               </select>
-                              <input class='form-control' type='number' ondrop='unallowDrop(event)' placeholder='Target Score'/>`;
+                              <input class='form-control form-control-sm text-center bc' type='number' ondrop='unallowDrop(event)' placeholder='Target Score'/>`;
   e.target.appendChild(targetS_factor);
   drop(e);
 }
@@ -106,8 +110,8 @@ function unallowDrop(e) {
 }
 
 function removeDiv() {
-  if(prevSibling_id !== undefined) {
-    if(prevSibling_id.includes("list_group_criteria_")) {
+  if (prevSibling_id !== undefined) {
+    if (prevSibling_id.includes("list_group_criteria_")) {
       document.getElementById(prevSibling_id).remove();
       prevSibling_id = undefined;
     }

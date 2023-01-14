@@ -78,19 +78,19 @@
             <div class="card my-4" id="card_criteriaTotal">
                 <div class="card-header" id="card_header_criteriaTotal"><b>Total of Criteria</b></div>
                 <div class="card-body">
-                    <input class="form-control col-6" type="number" id="criteria_total" name="criteriaTotal" placeholder="Enter the total"
+                    <input class="form-control text-center bc" type="number" id="criteria_total" name="criteriaTotal" placeholder="Enter the total"
                         onfocus="saveOldVal(this)" onchange="showCriteriaCard(this)" />
                 </div>
             </div>
             <div class="card my-4" id="card_columnList">
                 <div class="card-header" id="card_header_columnList"><b>List of Column</b></div>
-                <div class="card-body">
+                <div class="card-body cb-criteria">
 
                 </div>
             </div>
         </div>
         <p class="text-center" id="criteria_rules">Drag the column name in List of Column and then down to the criteria block</p>
-        <div class="criteria-wrapper" id="criteria_wrapper"></div>
+        <div class="criteria-wrapper mt-4" id="criteria_wrapper"></div>
     </div>
 
     <script src="./js/main.js"></script>
