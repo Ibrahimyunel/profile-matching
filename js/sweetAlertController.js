@@ -1,15 +1,3 @@
-function wrongValue(res) {
-  swal({
-    title: "Request berhasil!",
-    text: "Silahkan cek email untuk melihat password anda!",
-    icon: "success",
-    button: true,
-  })
-    .then(() => {
-      $(res).removeAttr("onclick");
-      $(res).prev().prop("disabled", true).attr("checked", false);
-    });
-}
 
 function restartProject() {
   Swal.fire({

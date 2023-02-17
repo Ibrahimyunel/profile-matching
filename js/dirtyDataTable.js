@@ -1,5 +1,4 @@
 function dirtyDataTable(sheet_data) {
-    // var table_output = '<table class="table table-striped table-bordered" id="myTable">';
     const table = document.createElement('table');
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');
@@ -10,11 +9,8 @@ function dirtyDataTable(sheet_data) {
     table.setAttributeNode(createId);
 
     table.setAttributeNode(createClass);
-    // table.classList.add("table table-striped table-bordered");
-    // table.id.add("myTable");
 
     for (var row = 0; row < sheet_data.length; row++) {
-        // table_output += '<tr>';
         const tr = document.createElement('tr');
 
         for (var cell = 0; cell < sheet_data[0].length; cell++) {
@@ -26,14 +22,11 @@ function dirtyDataTable(sheet_data) {
                     }
                 }
 
-
-                // table_output += '<th>' + sheet_data[row][cell] + '</th>';
                 const th = document.createElement('th');
                 const thText = document.createTextNode(sheet_data[row][cell]);
                 th.appendChild(thText);
                 tr.appendChild(th);
 
-                // const columnName = '<option>' + sheet_data[row][cell] + '</option>';
                 const optionTag = document.createElement('option');
                 optionTag.setAttribute('value', sheet_data[row][cell]);
                 const optionText = document.createTextNode(sheet_data[row][cell]);
@@ -53,13 +46,12 @@ function dirtyDataTable(sheet_data) {
                 cbInput.setAttribute('type', 'checkbox');
                 cbInput.setAttribute('value', sheet_data[row][cell]);
                 cbInput.setAttribute('id', sheet_data[row][cell]);
-                cbInput.setAttribute('onchange', 'unclickLabel(this); getActiveColumn()'); //doesn't solve yet, fucekkkkkkkkkkkkkkkkkkkkkkkkkkk
+                cbInput.setAttribute('onchange', 'unclickLabel(this); getActiveColumn()');
                 cbInput.setAttribute('checked', true);
                 cbDiv.appendChild(cbInput);
 
                 const cbLabel = document.createElement('label');
                 cbLabel.setAttribute('class', 'form-check-label');
-                // cbLabel.setAttribute('for', sheet_data[row][cell]);
                 cbLabel.setAttribute('id', sheet_data[row][cell]);
                 cbLabel.setAttribute("onclick", "getColumnIndex(this); changeScoring(this)");
                 const cbTextNode = document.createTextNode(sheet_data[row][cell]);
@@ -69,17 +61,14 @@ function dirtyDataTable(sheet_data) {
                 container_checkbox.appendChild(cbDiv);
 
                 columnsName.push(sheet_data[row][cell]);
-
             }
             else {
-                // table_output += '<td>' + sheet_data[row][cell] + '</td>';
                 const td = document.createElement('td');
                 const thText = document.createTextNode(sheet_data[row][cell]);
                 td.appendChild(thText);
                 tr.appendChild(td);
             }
         }
-        // table_output += '</tr>';
         if (row === 0) {
             thead.appendChild(tr);
         } else {
@@ -87,7 +76,6 @@ function dirtyDataTable(sheet_data) {
         }
     }
 
-    // table_output += '</table>';
     table.appendChild(thead);
     table.appendChild(tbody);
 
@@ -112,6 +100,4 @@ function dirtyDataTable(sheet_data) {
 
     autoDisableCheckbox(newData, columnsName);
     getActiveColumn();
-
-
 }

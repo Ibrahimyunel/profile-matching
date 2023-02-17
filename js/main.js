@@ -28,8 +28,6 @@ var arrScore = new Array();
 
 var checkedTrue = new Array();
 
-// excel_file.addEventListener('change', readFile);
-
 var sheet_data;
 function readFile(target) {
     console.log(target.files[0]);

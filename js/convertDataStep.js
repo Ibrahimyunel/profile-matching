@@ -88,7 +88,6 @@ function createScoreWrapper() {
         wrap.setAttribute('class', 'wrapper-for-' + columnsName[i]);
         wrap.setAttribute('id', 'wrapper_for_' + columnsName[i]);
         wrap.setAttribute('style', 'display: none;');
-        // wrap.innerHTML += "<h4 class='text-center my-3'>" + columnsName[i] + "</h4>";
         var addstr = "";
         if (columnsName[i].length > 25) addstr = "...";
         wrap.innerHTML += "<button class='btn btn-outline-primary btn-lg d-block mx-auto my-4' id='button_" + columnsName[i] + "' onclick='showListValue(this)'><span>Open</span> Convert Data of " + columnsName[i].substr(0, 25) + addstr + " Column</button>";
