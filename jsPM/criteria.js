@@ -85,8 +85,7 @@ function listCriteria(e) {
   drop(e);
 }
 
-var list_id;
-var prevSibling_id;
+var list_id, prevSibling_id;
 function dragStart(e) {
   e.dataTransfer.setData("list_id", e.target.id);
   list_id = e.dataTransfer.getData("list_id");
@@ -107,6 +106,18 @@ function allowDrop(e) {
 
 function unallowDrop(e) {
   e.stopPropagation();
+  var func, eve;
+  if (e.target.parentNode.id.includes("list_group_criteria_")) {
+    func = "listCriteria";
+  } else func = "drop";
+
+  if (e.target.id.includes("list_")) {
+    eve = e.target.parentNode;
+  } else eve = e.target.parentNode.parentNode;
+
+  eve.addEventListener('click', eval(func));
+  eve.click();
+  eve.removeEventListener('click', eval(func));
 }
 
 function removeDiv() {

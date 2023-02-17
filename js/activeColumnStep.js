@@ -1,37 +1,3 @@
-// function unclickLabel(target) {
-//     var xmlhttp5 = new XMLHttpRequest();
-//     xmlhttp5.onreadystatechange = function () {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById(target.id).parentNode.innerHTML = this.responseText;
-//         }
-//     }
-//     xmlhttp5.open("GET", "activeColumnStep.php?resId=" + target.id + "&resChecked=" + target.checked, false);
-//     xmlhttp5.send();
-
-//     uncl(target);
-// }
-// function uncl(target) {
-//     var idx = columnsName.indexOf(target.id);
-//     var getLabel = document.querySelector("label#"+target.id);
-//     if (wrongConvertString.includes(target.id)) {
-//         if (!target.checked) {
-//             getLabel.removeAttribute("style");
-//         }
-//         else if (arrScore[idx].includes(null)) {
-//             errorDecor_text(getLabel);
-//         }
-//     }
-//     else if (wrongConvertNumber.includes(target.id)) {
-//         if (!target.checked) {
-//             $(target).next().removeAttr("style");
-//         }
-//         else if (arrScore[idx].includes(null)) {
-//             if (arrScore[idx].some((value) => typeof value === "number")) {
-//                 errorDecor_text(getLabel);
-//             }
-//         }
-//     }
-// }
 
 function unclickLabel(target) {
     if (target.checked) {
