@@ -1,8 +1,11 @@
-import { container_score, arrScore, indexChoice, columnsName, newData } from "./main.js";
+import { container_score, arrScore, columnsName, newData } from "./main.js";
 import { wrongConvertString, wrongConvertNumber } from "./validationCleanDataTable.js";
 import { errorDecor_text } from "./validationCleanDataTable.js";
+import { indexChoice } from "./preprocessSupport.js";
+import { getColumnIndex } from "./preprocessSupport.js";
 
-export function changeScoring(getElement) {
+export function changeScoring(e) {
+    getColumnIndex(e);
     var arrScoreWrapper = [].slice.call(container_score.children);
     for (var i = 0; i < arrScoreWrapper.length; i++) {
         if (arrScoreWrapper[i].style.display === 'block') {
@@ -10,19 +13,19 @@ export function changeScoring(getElement) {
         }
     }
 
-    var wrapSelected = document.getElementById('wrapper_for_' + getElement.id);
+    var wrapSelected = document.getElementById('wrapper_for_' + e.target.id);
     wrapSelected.style.display = 'block';
 }
 
-export function getScore(target) {
-    var arrInput = [].slice.call(target.parentNode.parentNode.children);
-    var arrInputChoice = arrInput.indexOf(target.parentNode) - 1;
+export function getScore(e) {
+    var arrInput = [].slice.call(e.target.parentNode.parentNode.children);
+    var arrInputChoice = arrInput.indexOf(e.target.parentNode) - 1;
 
-    if (target.value === "") {
+    if (e.target.value === "") {
         arrScore[indexChoice][arrInputChoice] = null;
     }
     else {
-        arrScore[indexChoice][arrInputChoice] = parseFloat(target.value);
+        arrScore[indexChoice][arrInputChoice] = parseFloat(e.target.value);
     }
 
     var errorElement = document.querySelector(".form-check-label#" + columnsName[indexChoice]);
@@ -49,7 +52,8 @@ export function getScore(target) {
 export function removeScoreWraper(idxChoice) {
     var button_id = document.querySelector('#button_' + columnsName[idxChoice]);
     var scoreWrapper = document.querySelectorAll('#score_wrapper_' + columnsName[idxChoice]);
-    button_id.firstChild.textContent = "Open";
+    let getText = button_id.textContent;
+    button_id.textContent = getText.replace("Cancel Convert Data", "Open Convert Data");
     button_id.classList.remove("btn-outline-secondary");
     button_id.classList.add("btn-lg", "btn-outline-primary");
     scoreWrapper.forEach((item) => {
@@ -58,18 +62,29 @@ export function removeScoreWraper(idxChoice) {
     arrScore[idxChoice].fill(null);
 }
 
-export function showListValue(target) {
-    if (target.firstChild.textContent === "Open") {
-        target.firstChild.textContent = "Cancel";
-        target.classList.remove("btn-lg", "btn-outline-primary");
-        target.classList.add("btn-outline-secondary");
+export function showListValue(e) {
+    if (e.target.textContent.includes("Open Convert Data")) {
+        let getText = e.target.textContent;
+        e.target.textContent = getText.replace("Open Convert Data", "Cancel Convert Data");
+        e.target.classList.remove("btn-lg", "btn-outline-primary");
+        e.target.classList.add("btn-outline-secondary");
         for (var col = 0; col < newData[indexChoice].length; col++) {
             if (newData[indexChoice][col] === null) continue;
             const listValue = document.createElement('div');
             listValue.setAttribute('class', 'convert-wrapper');
             listValue.setAttribute('id', 'score_wrapper_' + columnsName[indexChoice]);
-            listValue.innerHTML += "<input  type='number' class='form-control convert-input' id='" + newData[indexChoice][col] + "' onchange='getScore(this)' placeholder='Score' value='" + arrScore[indexChoice][col] + "'/>";
+            const convertInput = document.createElement("input");
+            convertInput.setAttribute('type', 'number');
+            convertInput.setAttribute('class', 'form-control convert-input');
+            convertInput.setAttribute('id', newData[indexChoice][col]);
+            convertInput.setAttribute('placeholder', 'Score');
+            convertInput.setAttribute('value', arrScore[indexChoice][col]);
+            convertInput.addEventListener('change', getScore);
+
+            listValue.appendChild(convertInput);
+            
             listValue.innerHTML += "<label class='col-form-label' for='" + newData[indexChoice][col] + "'>" + newData[indexChoice][col] + "</label>";
+
             document.getElementById('wrapper_for_' + columnsName[indexChoice]).appendChild(listValue);
         }
     }
@@ -94,7 +109,13 @@ export function createScoreWrapper() {
         wrap.setAttribute('style', 'display: none;');
         var addstr = "";
         if (columnsName[i].length > 25) addstr = "...";
-        wrap.innerHTML += "<button class='btn btn-outline-primary btn-lg d-block mx-auto my-4' id='button_" + columnsName[i] + "' onclick='showListValue(this)'><span>Open</span> Convert Data of " + columnsName[i].substr(0, 25) + addstr + " Column</button>";
+        var buttonChange = document.createElement('button');
+        buttonChange.setAttribute('class', 'btn btn-outline-primary btn-lg d-block mx-auto my-4');
+        buttonChange.setAttribute('id', 'button_' + columnsName[i]);
+        buttonChange.addEventListener('click', showListValue);
+        buttonChange.innerHTML = "Open Convert Data of " + columnsName[i].substr(0, 25) + addstr + " Column";
+        wrap.appendChild(buttonChange);
+
         container_score.appendChild(wrap);
     }
 }
