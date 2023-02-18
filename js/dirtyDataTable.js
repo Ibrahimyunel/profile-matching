@@ -1,4 +1,8 @@
-function dirtyDataTable(sheet_data) {
+import { container_checkbox, selectIdx, columnsName, newData } from "./main.js";
+import { autoDisableCheckbox } from "./preprocessSupport.js";
+import { getActiveColumn, unclickLabel } from "./activeColumnStep.js";
+
+export function dirtyDataTable(sheet_data) {
     const table = document.createElement('table');
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');

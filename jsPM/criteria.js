@@ -1,12 +1,12 @@
-const card_criteriaTotal = document.getElementById('card_criteriaTotal');
-card_criteriaTotal.style.display = "none";
-const card_columnList = document.getElementById('card_columnList');
-card_columnList.style.display = "none";
-const criteria_wrapper = document.getElementById('criteria_wrapper');
-const criteria_rules = document.getElementById('criteria_rules');
-criteria_rules.style.display = "none";
+import { checkedTrue } from "../js/main.js";
 
-function showColumnList() {
+export const card_criteriaTotal = document.getElementById('card_criteriaTotal');
+export const card_columnList = document.getElementById('card_columnList');
+const criteria_wrapper = document.getElementById('criteria_wrapper');
+export const criteria_rules = document.getElementById('criteria_rules');
+export const criteria_total = document.getElementById('criteria_total');
+
+export function showColumnList() {
   var list = "<div class='list-group list-group-horizontal list-criteria lc-pt' id='list_of_column' ondrop='drop(event)' ondragover='allowDrop(event)'>";
   for (var i = 0; i < checkedTrue.length; i++) {
     var addstr = "";
@@ -17,7 +17,7 @@ function showColumnList() {
   card_columnList.lastElementChild.innerHTML = list;
 }
 
-function updateColumnList() {
+export function updateColumnList() {
   for (var b = 0; b < checkedTrue.length; b++) {
     var getli = document.querySelector("p#list_" + checkedTrue[b]);
     var getParentli = document.getElementById("list_of_column");
@@ -32,19 +32,19 @@ function updateColumnList() {
 }
 
 var oldVal;
-function saveOldVal(target) {
-  if (target.value === "") {
+export function saveOldVal(e) {
+  if (e.target.value === "") {
     oldVal = 0;
   }
   else {
-    oldVal = parseInt(target.value);
+    oldVal = parseInt(e.target.value);
   }
 }
 
-function showCriteriaCard(target) {
+export function showCriteriaCard(e) {
   criteria_rules.style.display = 'block';
-  if (oldVal > target.value) {
-    for (var i = oldVal; i > target.value; i--) {
+  if (oldVal > e.target.value) {
+    for (var i = oldVal; i > e.target.value; i--) {
       var cancelList = document.querySelectorAll(`#list_group_criteria_${i - 1} > p`);
       for (var b = 0; b < cancelList.length; b++) {
         card_columnList.lastElementChild.firstChild.appendChild(cancelList[b]);
@@ -52,7 +52,7 @@ function showCriteriaCard(target) {
       document.getElementById(`criteria_${i - 1}`).remove();
     }
   }
-  for (var i = oldVal; i < target.value; i++) {
+  for (var i = oldVal; i < e.target.value; i++) {
     var criteria = document.createElement("div");
     criteria.setAttribute("class", "card mb-4");
     criteria.setAttribute("id", `criteria_${i}`);
@@ -67,7 +67,7 @@ function showCriteriaCard(target) {
                           </div>`;
     criteria_wrapper.appendChild(criteria);
   }
-  target.blur();
+  e.target.blur();
   $("#criteria_name0").focus();
 }
 

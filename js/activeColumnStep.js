@@ -1,5 +1,10 @@
+import { errorDecor_text } from "./validationCleanDataTable.js";
+import { wrongConvertString, wrongConvertNumber } from "./validationCleanDataTable.js";
+import { columnsName, arrScore, container_checkbox, checkedTrue } from "./main.js";
+import { card_header_activeC } from "./validationCleanDataTable.js";
 
-function unclickLabel(target) {
+
+export function unclickLabel(target) {
     if (target.checked) {
         $(target).next().attr("onclick", "getColumnIndex(this); changeScoring(this)");
         target.setAttribute("checked", true);
@@ -30,12 +35,12 @@ function unclickLabel(target) {
     }
 }
 
-function getActiveColumn() {
+export function getActiveColumn() {
     var checkboxParent = [].slice.call(container_checkbox.children);
     checkboxParent.shift();
 
     checkedTrue.length = 0;
-    for (i = 0; i < checkboxParent.length; i++) {
+    for (let i = 0; i < checkboxParent.length; i++) {
         if (checkboxParent[i].firstChild.checked === true) {
             checkedTrue.push(checkboxParent[i].textContent);
         }
