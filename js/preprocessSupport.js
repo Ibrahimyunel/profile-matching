@@ -1,12 +1,13 @@
-function autoDisableCheckbox(nData, cName) {
+// import 
+export function autoDisableCheckbox(nData, cName) {
     var arrDisabled = [];
-    for (i = 0; i < nData.length; i++) {
+    for (let i = 0; i < nData.length; i++) {
         if (nData[i].length > 50) {
             arrDisabled.push(i);
         }
     }
-    for (b = 0; b <= arrDisabled.length; b++) {
-        for (i = 0; i <= cName.length; i++) {
+    for (let b = 0; b <= arrDisabled.length; b++) {
+        for (let i = 0; i <= cName.length; i++) {
             if (cName.indexOf(cName[i]) === arrDisabled[b]) {
                 $(".form-check-input#" + cName[i]).prop("disabled", true).removeAttr("checked");
                 $(".form-check-input#" + cName[i]).next().removeAttr("onclick");
@@ -16,13 +17,13 @@ function autoDisableCheckbox(nData, cName) {
     }
 }
 
-const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]));
+export const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]));
 
-function pickDataOnce(arr) {
+export function pickDataOnce(arr) {
     try {
         // let res = new Array(arr.length).fill(null).map(() => new Array(arr[0].length).fill(null));
         let res = [];
-        for (row = 0; row < arr.length; row++) {
+        for (var row = 0; row < arr.length; row++) {
             res[row] = [];
 
             // delete arr[row][0];
@@ -50,7 +51,7 @@ function pickDataOnce(arr) {
     }
 }
 
-function getColumnIndex(target) {
+export function getColumnIndex(target) {
     indexChoice = [].slice.call(target.parentNode.parentNode.children).indexOf(target.parentNode) - 1;
     return indexChoice;
 }

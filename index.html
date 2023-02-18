@@ -30,9 +30,8 @@
             <div class="card-header"><b>Select Excel File</b></div>
             <div class="card-body">
                 <form class="input-group" enctype="multipart/form-data">
-                    <input class="form-control" type="file" id="excel_file" name="sFile" onchange="controlFile(this)" />
-                    <input class="btn btn-outline-secondary" type="button" value="Restart project"
-                        onclick="restartProject()">
+                    <input class="form-control" type="file" id="excel_file" name="sFile" />
+                    <input class="btn btn-outline-secondary" type="button" id="restart_project" value="Restart project" />
                 </form>
             </div>
         </div>
@@ -42,7 +41,7 @@
         <div class="card mt-4" id="card_index">
             <div class="card-header" id="card_header_index"><b>Select Index Table</b></div>
             <div class="card-body">
-                <select class="form-select" id="select_idx" onchange="disableIndex(this)">
+                <select class="form-select" id="select_idx">
                     <option selected disabled value="">Choose index of table in this select menu</option>
                 </select>
             </div>
@@ -68,8 +67,7 @@
             </div>
         </div>
         <div>
-            <button class="btn btn-outline-primary mx-auto mt-4 col-6" id="btnShowCleanData"
-                onclick="makeCleanDataValidation()"><span>Show</span> Clean Data Table</button>
+            <button class="btn btn-outline-primary mx-auto mt-4 col-6" id="btnShowCleanData"><span>Show</span> Clean Data Table</button>
         </div>
 
         <div id="clean_data" class="mt-5"></div>
@@ -78,8 +76,7 @@
             <div class="card my-4" id="card_criteriaTotal">
                 <div class="card-header" id="card_header_criteriaTotal"><b>Total of Criteria</b></div>
                 <div class="card-body">
-                    <input class="form-control text-center bc" type="number" id="criteria_total" name="criteriaTotal" placeholder="Enter the total"
-                        onfocus="saveOldVal(this)" onchange="showCriteriaCard(this)" />
+                    <input class="form-control text-center bc" type="number" id="criteria_total" name="criteriaTotal" placeholder="Enter the total" />
                 </div>
             </div>
             <div class="card my-4" id="card_columnList">
@@ -93,19 +90,7 @@
         <div class="criteria-wrapper mt-4" id="criteria_wrapper"></div>
     </div>
 
-    <script src="./js/main.js"></script>
-    <script src="./js/dirtyDataTable.js"></script>
-    <script src="./js/selectIndexStep.js"></script>
-    <script src="./js/convertDataStep.js"></script>
-    <script src="./js/activeColumnStep.js"></script>
-    <script src="./js/preprocessSupport.js"></script>
-    <script src="./js/cleanDataTable.js"></script>
-    <script src="./js/validationCleanDataTable.js"></script>
-    <script src="./js/sweetAlertController.js"></script>
-
-    <script src="./jsPM/criteria.js"></script>
-
-
+    <script type="module" src="./app.js"></script>
 
 
 

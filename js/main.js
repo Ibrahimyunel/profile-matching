@@ -1,34 +1,26 @@
-const excel_file = document.getElementById('excel_file');
-const selectIdx = document.getElementById('select_idx');
+import { dirtyDataTable } from "./dirtyDataTable.js";
+import { createScoreWrapper } from "./convertDataStep.js";
+import { errorValidation } from "./sweetAlertController.js";
+import { transpose, pickDataOnce } from "./preprocessSupport.js";
 
-const card_index = document.getElementById('card_index');
-card_index.style.display = "none";
+export const excel_file = document.getElementById('excel_file');
+export const restart_project = document.getElementById('restart_project');
+export const selectIdx = document.getElementById('select_idx');
+export const card_index = document.getElementById('card_index');
+export const card_active = document.getElementById('card_active');
+export const container_checkbox = document.getElementById('container_checkbox');
+export const card_score = document.getElementById("card_score");
+export const container_score = document.getElementById("container_score");
+export const btnShowCleanData = document.getElementById('btnShowCleanData');
 
-const card_active = document.getElementById('card_active');
-card_active.style.display = "none";
-const container_checkbox = document.getElementById('container_checkbox');
-
-const card_score = document.getElementById("card_score");
-card_score.style.display = "none";
-
-const container_score = document.getElementById("container_score");
-
-const btnShowCleanData = document.getElementById('btnShowCleanData');
-btnShowCleanData.style.display = "none";
-
-var columnsName = new Array();
-
-var newData = new Array();
-
+export var columnsName = new Array();
+export var newData = new Array();
+export var arrScore = new Array();
+export var checkedTrue = new Array();
 var actual_sheet_data = new Array();
+export var indexChoice = 0;
+export var sheet_data;
 
-var indexChoice = 0;
-
-var arrScore = new Array();
-
-var checkedTrue = new Array();
-
-var sheet_data;
 function readFile(target) {
     console.log(target.files[0]);
 
@@ -57,7 +49,7 @@ function readFile(target) {
             console.log(newData);
 
             arrScore = new Array(newData.length).fill(null);
-            for (row = 0; row < newData.length; row++) {
+            for (var row = 0; row < newData.length; row++) {
                 arrScore[row] = new Array(newData[row].length).fill(null);
             }
 
@@ -101,8 +93,8 @@ function controlHeader(sheet_data) {
     }
 }
 
-function controlFile(target) {
-    if (!['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(target.files[0].type)) {
+export function controlFile(e) {
+    if (!['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(e.target.files[0].type)) {
         var errorText = "Only .xlsx or .xls file format are allowed";
         excel_file.value = '';
         var respond = [errorText];
@@ -110,7 +102,7 @@ function controlFile(target) {
         // return false;
     }
     else {
-        target.setAttribute('disabled', true);
-        readFile(target);
+        e.target.setAttribute('disabled', true);
+        readFile(e.target);
     }
 }

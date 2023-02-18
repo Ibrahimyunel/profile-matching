@@ -1,4 +1,6 @@
-function cleanDataTable(sheet_data) {
+import { checkedTrue, selectIdx, columnsName, arrScore, newData } from "./main.js";
+
+export function cleanDataTable(sheet_data) {
     var cleanData = document.getElementById('clean_data');
     cleanData.innerHTML = "";
     const tableClean = document.createElement('table');

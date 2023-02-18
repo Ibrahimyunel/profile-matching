@@ -1,5 +1,5 @@
 
-function restartProject() {
+export function restartProject() {
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert the data that you have input!",
@@ -15,7 +15,7 @@ function restartProject() {
   });
 }
 
-function errorValidation(arr) {
+export function errorValidation(arr) {
   var newArr = [...arr];
   var parss = $.parseHTML(newArr[0]);
 

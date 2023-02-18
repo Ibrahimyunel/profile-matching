@@ -1,5 +1,8 @@
+import { container_score, arrScore, indexChoice, columnsName, newData } from "./main.js";
+import { wrongConvertString, wrongConvertNumber } from "./validationCleanDataTable.js";
+import { errorDecor_text } from "./validationCleanDataTable.js";
 
-function changeScoring(getElement) {
+export function changeScoring(getElement) {
     var arrScoreWrapper = [].slice.call(container_score.children);
     for (var i = 0; i < arrScoreWrapper.length; i++) {
         if (arrScoreWrapper[i].style.display === 'block') {
@@ -11,7 +14,7 @@ function changeScoring(getElement) {
     wrapSelected.style.display = 'block';
 }
 
-function getScore(target) {
+export function getScore(target) {
     var arrInput = [].slice.call(target.parentNode.parentNode.children);
     var arrInputChoice = arrInput.indexOf(target.parentNode) - 1;
 
@@ -43,7 +46,7 @@ function getScore(target) {
     console.log(arrScore);
 }
 
-function removeScoreWraper(idxChoice) {
+export function removeScoreWraper(idxChoice) {
     var button_id = document.querySelector('#button_' + columnsName[idxChoice]);
     var scoreWrapper = document.querySelectorAll('#score_wrapper_' + columnsName[idxChoice]);
     button_id.firstChild.textContent = "Open";
@@ -54,7 +57,8 @@ function removeScoreWraper(idxChoice) {
     });
     arrScore[idxChoice].fill(null);
 }
-function showListValue(target) {
+
+export function showListValue(target) {
     if (target.firstChild.textContent === "Open") {
         target.firstChild.textContent = "Cancel";
         target.classList.remove("btn-lg", "btn-outline-primary");
@@ -82,7 +86,7 @@ function showListValue(target) {
     }
 }
 
-function createScoreWrapper() {
+export function createScoreWrapper() {
     for (var i = 0; i < columnsName.length; i++) {
         var wrap = document.createElement('div');
         wrap.setAttribute('class', 'wrapper-for-' + columnsName[i]);

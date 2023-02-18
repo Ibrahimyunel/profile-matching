@@ -1,10 +1,21 @@
-const card_header_index = document.getElementById("card_header_index");
-const card_header_activeC = document.getElementById("card_header_activeC");
-const card_header_score = document.getElementById("card_header_score");
-var wrongConvertString = [];
-var wrongConvertNumber = [];
+import { columnsName, checkedTrue, newData, arrScore, } from "./main.js";
+import { selectIdx, btnShowCleanData } from "./main.js";
+import { sheet_data } from "./main.js";
+import { cleanDataTable } from "./cleanDataTable.js";
+import { errorValidation } from "./sweetAlertController.js";
+import { showColumnList, updateColumnList } from "../jsPM/criteria.js";
+import { disableIndex } from "./selectIndexStep.js";
+import { card_criteriaTotal, card_columnList } from "../jsPM/criteria.js";
 
-function makeCleanDataValidation() {
+const card_header_index = document.getElementById("card_header_index");
+const card_header_score = document.getElementById("card_header_score");
+export const card_header_activeC = document.getElementById("card_header_activeC");
+
+
+export var wrongConvertString = [];
+export var wrongConvertNumber = [];
+
+export function makeCleanDataValidation() {
     if (selectIdx.selectedIndex === 0) {
         card_header_index.setAttribute('onclick', 'errorDecor_header(this)');
         selectIdx.setAttribute('onfocus', 'errorDecor_index(this)');
@@ -78,24 +89,25 @@ function makeCleanDataValidation() {
                 btnShowCleanData.firstChild.textContent = "Update";
                 showColumnList();
             } else {
+                console.log(btnShowCleanData.firstChild.textContent);
                 updateColumnList();
             }
         }
     }
 }
 
-function errorDecor_index(target) {
+export function errorDecor_index(target) {
     target.setAttribute("style", "border-color: #dc3545; box-shadow: 0 0 0 0.25rem rgb(220 53 69 / 25%);");
 }
 
-function errorDecor_header(target) {
+export function errorDecor_header(target) {
     target.setAttribute("style", "background-color: #dc3545;");
 }
-function errorDecor_text(target) {
+export function errorDecor_text(target) {
     target.setAttribute("style", "color: #dc3545;");
 }
 
-function errorScoreController() {
+export function errorScoreController() {
     for (var i = 0; i < wrongConvertString.length; i++) {
         var errorElement = document.querySelector(".form-check-label#" + wrongConvertString[i]);
         var onclickVal = errorElement.getAttributeNode("onclick");
