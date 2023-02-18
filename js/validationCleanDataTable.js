@@ -35,7 +35,8 @@ export function makeCleanDataValidation() {
     }
     else if (checkedTrue.length < 2) {
         // const inputCheckFirsh = document.querySelectorAll("input[type='checkbox']:not(:checked):not(:disabled)")[0];
-        card_header_activeC.setAttribute('onclick', 'errorDecor_header(this)');
+        card_header_activeC.addEventListener('click', errorDecor_header);
+
         var errorText = "There are at least 2 checked in Active Columns list";
         var selfClick = "card_header_activeC.click()";
         var respond = [errorText, selfClick];

@@ -1,6 +1,7 @@
 import { container_checkbox, selectIdx, columnsName, newData } from "./main.js";
 import { autoDisableCheckbox } from "./preprocessSupport.js";
 import { getActiveColumn, unclickLabel } from "./activeColumnStep.js";
+import { changeScoring } from "./convertDataStep.js";
 
 export function dirtyDataTable(sheet_data) {
     const table = document.createElement('table');
@@ -50,17 +51,17 @@ export function dirtyDataTable(sheet_data) {
                 cbInput.setAttribute('type', 'checkbox');
                 cbInput.setAttribute('value', sheet_data[row][cell]);
                 cbInput.setAttribute('id', sheet_data[row][cell]);
-                cbInput.setAttribute('onchange', 'unclickLabel(this); getActiveColumn()');
                 cbInput.setAttribute('checked', true);
                 cbDiv.appendChild(cbInput);
+                cbInput.addEventListener('change', unclickLabel);
 
                 const cbLabel = document.createElement('label');
                 cbLabel.setAttribute('class', 'form-check-label');
                 cbLabel.setAttribute('id', sheet_data[row][cell]);
-                cbLabel.setAttribute("onclick", "getColumnIndex(this); changeScoring(this)");
                 const cbTextNode = document.createTextNode(sheet_data[row][cell]);
                 cbLabel.appendChild(cbTextNode);
                 cbDiv.appendChild(cbLabel);
+                cbLabel.addEventListener('click', changeScoring);
 
                 container_checkbox.appendChild(cbDiv);
 

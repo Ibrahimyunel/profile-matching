@@ -18,7 +18,6 @@ export var newData = new Array();
 export var arrScore = new Array();
 export var checkedTrue = new Array();
 var actual_sheet_data = new Array();
-export var indexChoice = 0;
 export var sheet_data;
 
 function readFile(target) {

@@ -2,37 +2,46 @@ import { errorDecor_text } from "./validationCleanDataTable.js";
 import { wrongConvertString, wrongConvertNumber } from "./validationCleanDataTable.js";
 import { columnsName, arrScore, container_checkbox, checkedTrue } from "./main.js";
 import { card_header_activeC } from "./validationCleanDataTable.js";
+import { getColumnIndex } from "./preprocessSupport.js";
+import { changeScoring } from "./convertDataStep.js";
+import { errorDecor_header } from "./validationCleanDataTable.js";
 
 
-export function unclickLabel(target) {
-    if (target.checked) {
-        $(target).next().attr("onclick", "getColumnIndex(this); changeScoring(this)");
-        target.setAttribute("checked", true);
+export function unclickLabel(e) {
+    if (e.target.checked) {
+        // $(e.target).next().attr("onclick", "changeScoring(event)");
+        $(e.target).next().on('click', changeScoring);
+        e.target.setAttribute("checked", true);
     }
     else {
-        $(target).next().removeAttr("onclick");
-        target.removeAttribute("checked");
+        // $(e.target).next().unbind();
+        // $(e.target).next().off('click', changeScoring);
+        const tar = e.target.nextElementSibling;
+        tar.removeEventListener('click', changeScoring);
+        console.log(tar);
+        e.target.removeAttribute("checked");
     }
 
-    var idx = columnsName.indexOf(target.id);
-    if (wrongConvertString.includes(target.id)) {
-        if (!target.checked) {
-            $(target).next().removeAttr("style");
+    var idx = columnsName.indexOf(e.target.id);
+    if (wrongConvertString.includes(e.target.id)) {
+        if (!e.target.checked) {
+            $(e.target).next().removeAttr("style");
         }
         else if (arrScore[idx].includes(null)) {
-            errorDecor_text(target.nextSibling);
+            errorDecor_text(e.target.nextSibling);
         }
     }
-    else if (wrongConvertNumber.includes(target.id)) {
-        if (!target.checked) {
-            $(target).next().removeAttr("style");
+    else if (wrongConvertNumber.includes(e.target.id)) {
+        if (!e.target.checked) {
+            $(e.target).next().removeAttr("style");
         }
         else if (arrScore[idx].includes(null)) {
             if (arrScore[idx].some((value) => typeof value === "number")) {
-                errorDecor_text(target.nextSibling);
+                errorDecor_text(e.target.nextSibling);
             }
         }
     }
+    getActiveColumn();
 }
 
 export function getActiveColumn() {
@@ -47,11 +56,11 @@ export function getActiveColumn() {
     }
 
     if (checkedTrue.length === 2) {
-        card_header_activeC.removeAttribute("onclick");
+        card_header_activeC.removeEventListener('click', errorDecor_header);
         card_header_activeC.removeAttribute("style");
     }
     else if (checkedTrue.length < 2) {
-        card_header_activeC.setAttribute('onclick', 'errorDecor_header(this)');
+        card_header_activeC.addEventListener('click', errorDecor_header);
         card_header_activeC.click();
     }
     console.log(checkedTrue);

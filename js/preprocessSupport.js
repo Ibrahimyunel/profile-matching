@@ -1,4 +1,3 @@
-// import 
 export function autoDisableCheckbox(nData, cName) {
     var arrDisabled = [];
     for (let i = 0; i < nData.length; i++) {
@@ -51,7 +50,8 @@ export function pickDataOnce(arr) {
     }
 }
 
-export function getColumnIndex(target) {
-    indexChoice = [].slice.call(target.parentNode.parentNode.children).indexOf(target.parentNode) - 1;
-    return indexChoice;
+export var indexChoice;
+export function getColumnIndex(e) {
+    indexChoice = [].slice.call(e.target.parentNode.parentNode.children).indexOf(e.target.parentNode) - 1;
+    // return indexChoice;
 }
