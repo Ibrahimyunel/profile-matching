@@ -1,6 +1,5 @@
 import { dirtyDataTable } from "./dirtyDataTable.js";
 import { createScoreWrapper } from "./convertDataStep.js";
-import { errorValidation } from "./sweetAlertController.js";
 import { transpose, pickDataOnce } from "./preprocessSupport.js";
 
 export const excel_file = document.getElementById('excel_file');
@@ -15,9 +14,9 @@ export const btnShowCleanData = document.getElementById('btnShowCleanData');
 
 export var columnsName = new Array();
 export var newData = new Array();
-export var arrScore = new Array();
 export var checkedTrue = new Array();
 var actual_sheet_data = new Array();
+export var arrScore;
 export var sheet_data;
 
 function readFile(target) {
@@ -61,10 +60,17 @@ function readFile(target) {
             btnShowCleanData.style.display = "block";
         }
         else {
-            var errorText = "Your data is empty!";
-            var selfReload = "location.reload()";
-            var respond = [errorText, selfReload];
-            errorValidation(respond);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Your data is empty!',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
         }
     }
 }
@@ -94,11 +100,17 @@ function controlHeader(sheet_data) {
 
 export function controlFile(e) {
     if (!['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(e.target.files[0].type)) {
-        var errorText = "Only .xlsx or .xls file format are allowed";
-        excel_file.value = '';
-        var respond = [errorText];
-        errorValidation(respond);
-        // return false;
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Only .xlsx or .xls file format are allowed',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        });
     }
     else {
         e.target.setAttribute('disabled', true);

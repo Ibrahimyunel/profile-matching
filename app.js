@@ -6,7 +6,6 @@ import { makeCleanDataValidation } from "./js/validationCleanDataTable.js";
 import { disableIndex } from "./js/selectIndexStep.js";
 import { saveOldVal, showCriteriaCard } from "./jsPM/criteria.js";
 import { criteria_total, card_criteriaTotal, card_columnList, criteria_rules } from "./jsPM/criteria.js";
-import { errorDecor_index, errorDecor_header,errorDecor_text,errorScoreController } from "./js/validationCleanDataTable.js";
 
 btnShowCleanData.style.display = "none";
 card_index.style.display = "none";

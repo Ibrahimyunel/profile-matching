@@ -1,4 +1,5 @@
 import { checkedTrue } from "../js/main.js";
+import { disableIndex } from "../js/selectIndexStep.js";
 
 export const card_criteriaTotal = document.getElementById('card_criteriaTotal');
 export const card_columnList = document.getElementById('card_columnList');
@@ -7,26 +8,44 @@ export const criteria_rules = document.getElementById('criteria_rules');
 export const criteria_total = document.getElementById('criteria_total');
 
 export function showColumnList() {
-  var list = "<div class='list-group list-group-horizontal list-criteria lc-pt' id='list_of_column' ondrop='drop(event)' ondragover='allowDrop(event)'>";
+  const list = document.createElement('div');
+  list.setAttribute('class', 'list-group list-group-horizontal list-criteria lc-pt');
+  list.setAttribute('id', 'list_of_column');
+  list.addEventListener('drop', drop);
+  list.addEventListener('dragover', allowDrop);
+
   for (var i = 0; i < checkedTrue.length; i++) {
     var addstr = "";
     if (checkedTrue[i].length > 25) addstr = "...";
-    list += "<p class='list-group-item text-center bc pd'  id='list_" + checkedTrue[i] + "' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[i].substr(0, 25) + addstr + "</p>";
+    const listItem = document.createElement('p');
+    listItem.setAttribute('class', 'list-group-item text-center bc pd');
+    listItem.setAttribute('id', `list_${checkedTrue[i]}`);
+    listItem.setAttribute('draggable', true);
+    listItem.addEventListener('drop', unallowDrop);
+    listItem.addEventListener('dragstart', dragStart);
+    listItem.appendChild(document.createTextNode(checkedTrue[i].substr(0, 25) + addstr));
+
+    list.appendChild(listItem);
   }
-  list += "</div>";
-  card_columnList.lastElementChild.innerHTML = list;
+  card_columnList.lastElementChild.appendChild(list);
 }
 
 export function updateColumnList() {
   for (var b = 0; b < checkedTrue.length; b++) {
-    var getli = document.querySelector("p#list_" + checkedTrue[b]);
-    var getParentli = document.getElementById("list_of_column");
+    const getli = document.querySelector("p#list_" + checkedTrue[b]);
+    const getParentli = document.getElementById("list_of_column");
     if (getli === null) {
       var addstr = "";
       if (checkedTrue[b].length > 25) addstr = "...";
-      const addlist = document.createElement("div");
-      addlist.innerHTML = "<p class='list-group-item text-center bc pd' id='list_" + checkedTrue[b] + "' ondrop='unallowDrop(event)' ondragstart='dragStart(event)' draggable='true'>" + checkedTrue[b].substr(0, 25) + addstr + "</p>";
-      getParentli.appendChild(addlist.firstChild);
+      const addlist = document.createElement('p');
+      addlist.setAttribute('class', 'list-group-item text-center bc pd');
+      addlist.setAttribute('id', `list_${checkedTrue[b]}`);
+      addlist.setAttribute('draggable', true);
+      addlist.addEventListener('drop', unallowDrop);
+      addlist.addEventListener('dragstart', dragStart);
+      addlist.appendChild(checkedTrue[b].substr(0, 25) + addstr);
+
+      getParentli.appendChild(addlist);
     }
   }
 }
@@ -53,18 +72,25 @@ export function showCriteriaCard(e) {
     }
   }
   for (var i = oldVal; i < e.target.value; i++) {
-    var criteria = document.createElement("div");
+    const criteria = document.createElement("div");
     criteria.setAttribute("class", "card mb-4");
     criteria.setAttribute("id", `criteria_${i}`);
     criteria.innerHTML = `<div class="card-header criteria-ch" id="card_header_columnList">
                               <input class="form-control text-center criteria-ch-content" type="text" id="criteria_name${i}" name="criteria_name${i}" placeholder="Enter Criteria Name ${i + 1}"/>
                               <input class="form-control text-center criteria-ch-content" type="number" id="criteria_weights${i}" name="criteria_weights${i}" placeholder="Weights"/>
-                          </div>
-                          <div class="card-body cb-criteria">
-                            <div class="list-group list-criteria" id="list_group_criteria_${i}" ondrop="listCriteria(event)" ondragover="allowDrop(event)">
-
-                            </div>
                           </div>`;
+
+    const cbCriteria = document.createElement('div');
+    cbCriteria.setAttribute('class', 'card-body cb-criteria');
+
+    const criteriaItem = document.createElement('div');
+    criteriaItem.setAttribute('class', 'list-group list-criteria');
+    criteriaItem.setAttribute('id', `list_group_criteria_${i}`);
+    criteriaItem.addEventListener('drop', listCriteria);
+    criteriaItem.addEventListener('dragover', allowDrop);
+
+    cbCriteria.appendChild(criteriaItem);
+    criteria.appendChild(cbCriteria);
     criteria_wrapper.appendChild(criteria);
   }
   e.target.blur();
@@ -72,15 +98,37 @@ export function showCriteriaCard(e) {
 }
 
 function listCriteria(e) {
-  var targetS_factor = document.createElement("div");
+  const targetS_factor = document.createElement("div");
   targetS_factor.setAttribute('class', 'targetS-factor');
   targetS_factor.setAttribute('id', `${e.target.id}_${list_id}`);
-  targetS_factor.setAttribute('ondrop', 'unallowDrop(event)');
-  targetS_factor.innerHTML = `<select class="form-select form-select-sm bc" id="select_idx" onchange="disableIndex(this)" ondrop='unallowDrop(event)'>
-                              <option selected value="">Core Factor</option>
-                              <option value="">Secondary Factor</option>
-                              </select>
-                              <input class='form-control form-control-sm text-center bc' type='number' ondrop='unallowDrop(event)' placeholder='Target Score'/>`;
+  targetS_factor.addEventListener('drop', unallowDrop);
+
+  const selectFactor = document.createElement('select');
+  selectFactor.setAttribute('class', 'form-select form-select-sm bc');
+  selectFactor.setAttribute('id', 'select_idx');
+  selectFactor.addEventListener('change', disableIndex);
+  selectFactor.addEventListener('drop', unallowDrop);
+
+  let arrOption = ["Core Factor", "Secondary Factor"];
+  for(let i = 0; i < arrOption.length; i++) {
+    const listOption = document.createElement('option');
+    listOption.setAttribute('value', arrOption[i]);
+    listOption.appendChild(document.createTextNode(arrOption[i]));
+    if (i === 0) listOption.setAttribute('selected', true);
+
+    selectFactor.appendChild(listOption);
+  }
+
+  const inputTargetScore = document.createElement('input');
+  inputTargetScore.setAttribute('type', 'number');
+  inputTargetScore.setAttribute('class', 'form-control form-control-sm text-center bc');
+  inputTargetScore.setAttribute('id', 'input_target_score');
+  inputTargetScore.setAttribute('placeholder', 'Target Score');
+  inputTargetScore.addEventListener('drop', unallowDrop)
+
+  targetS_factor.appendChild(selectFactor);
+  targetS_factor.appendChild(inputTargetScore);
+
   e.target.appendChild(targetS_factor);
   drop(e);
 }

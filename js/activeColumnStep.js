@@ -2,23 +2,17 @@ import { errorDecor_text } from "./validationCleanDataTable.js";
 import { wrongConvertString, wrongConvertNumber } from "./validationCleanDataTable.js";
 import { columnsName, arrScore, container_checkbox, checkedTrue } from "./main.js";
 import { card_header_activeC } from "./validationCleanDataTable.js";
-import { getColumnIndex } from "./preprocessSupport.js";
 import { changeScoring } from "./convertDataStep.js";
 import { errorDecor_header } from "./validationCleanDataTable.js";
 
 
 export function unclickLabel(e) {
     if (e.target.checked) {
-        // $(e.target).next().attr("onclick", "changeScoring(event)");
         $(e.target).next().on('click', changeScoring);
         e.target.setAttribute("checked", true);
     }
     else {
-        // $(e.target).next().unbind();
-        // $(e.target).next().off('click', changeScoring);
-        const tar = e.target.nextElementSibling;
-        tar.removeEventListener('click', changeScoring);
-        console.log(tar);
+        e.target.nextSibling.removeEventListener('click', changeScoring);
         e.target.removeAttribute("checked");
     }
 
@@ -64,5 +58,4 @@ export function getActiveColumn() {
         card_header_activeC.click();
     }
     console.log(checkedTrue);
-
 }
