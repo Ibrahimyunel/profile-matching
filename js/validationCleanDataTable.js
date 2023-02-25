@@ -2,45 +2,58 @@ import { columnsName, checkedTrue, newData, arrScore, } from "./main.js";
 import { selectIdx, btnShowCleanData } from "./main.js";
 import { sheet_data } from "./main.js";
 import { cleanDataTable } from "./cleanDataTable.js";
-import { errorValidation } from "./sweetAlertController.js";
 import { showColumnList, updateColumnList } from "../jsPM/criteria.js";
-import { disableIndex } from "./selectIndexStep.js";
 import { card_criteriaTotal, card_columnList } from "../jsPM/criteria.js";
 
 const card_header_index = document.getElementById("card_header_index");
 const card_header_score = document.getElementById("card_header_score");
 export const card_header_activeC = document.getElementById("card_header_activeC");
 
-
 export var wrongConvertString = [];
 export var wrongConvertNumber = [];
 
 export function makeCleanDataValidation() {
     if (selectIdx.selectedIndex === 0) {
-        card_header_index.setAttribute('onclick', 'errorDecor_header(this)');
-        selectIdx.setAttribute('onfocus', 'errorDecor_index(this)');
-        var errorText = "You forgot to choose index";
-        var selfClick = "card_header_index.click()";
-        var selfFocus = "selectIdx.focus()";
+        card_header_index.addEventListener('click', errorDecor_header);
+        selectIdx.addEventListener('focus', errorDecor_index);
 
         selectIdx.onchange = () => {
-            selectIdx.removeAttribute("onfocus");
+            selectIdx.removeEventListener('focus', errorDecor_index);
             selectIdx.removeAttribute("style");
-            disableIndex(selectIdx);
-            card_header_index.removeAttribute("onclick");
+            card_header_index.removeEventListener('click', errorDecor_header);
             card_header_index.removeAttribute("style");
         }
-        var respond = [errorText, selfClick, selfFocus];
-        errorValidation(respond);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "You forgot to choose index",
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setTimeout(() => {
+                    card_header_index.click();
+                    selectIdx.focus();
+                }, 290)
+            }
+        });
     }
     else if (checkedTrue.length < 2) {
         // const inputCheckFirsh = document.querySelectorAll("input[type='checkbox']:not(:checked):not(:disabled)")[0];
         card_header_activeC.addEventListener('click', errorDecor_header);
 
-        var errorText = "There are at least 2 checked in Active Columns list";
-        var selfClick = "card_header_activeC.click()";
-        var respond = [errorText, selfClick];
-        errorValidation(respond);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "There are at least 2 checked in Active Columns list",
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                card_header_activeC.click();
+            }
+        });
     }
     else {
         wrongConvertString = [];
@@ -66,20 +79,28 @@ export function makeCleanDataValidation() {
         var errorText = "";
         if (wrongConvertString.length > 0 || wrongConvertNumber.length > 0) {
             if (wrongConvertString.length > 0) {
-                errorText += "You must convert data in the columns named <span class='text-danger'>" + wrongConvertString + "</span>";
+                errorText += "You must convert data in the columns named " + wrongConvertString;
             }
             if (wrongConvertNumber.length > 0) {
-                errorText += "<br><br> You must complete the conversion data in the columns named <span class='text-danger'>" + wrongConvertNumber + "</span>";
+                errorText += "\nYou must complete the conversion data in the columns named " + wrongConvertNumber;
             }
-            card_header_score.setAttribute('onclick', 'errorDecor_header(this)');
-            var selfClick = "card_header_score.click()";
-            var redText = "errorScoreController()";
-            var respond = [errorText, selfClick, redText];
-            errorValidation(respond);
+            card_header_score.addEventListener('click', errorDecor_header);
 
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: errorText,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    card_header_score.click();
+                    errorScoreController();
+                }
+            });
         }
         else {
-            card_header_score.removeAttribute("onclick");
+            card_header_score.removeEventListener('click', errorDecor_header);
             card_header_score.removeAttribute("style");
             cleanDataTable(sheet_data);
 
@@ -97,12 +118,12 @@ export function makeCleanDataValidation() {
     }
 }
 
-export function errorDecor_index(target) {
-    target.setAttribute("style", "border-color: #dc3545; box-shadow: 0 0 0 0.25rem rgb(220 53 69 / 25%);");
+export function errorDecor_index(e) {
+    e.target.setAttribute("style", "border-color: #dc3545; box-shadow: 0 0 0 0.25rem rgb(220 53 69 / 25%);");
 }
 
-export function errorDecor_header(target) {
-    target.setAttribute("style", "background-color: #dc3545;");
+export function errorDecor_header(e) {
+    e.target.setAttribute("style", "background-color: #dc3545;");
 }
 export function errorDecor_text(target) {
     target.setAttribute("style", "color: #dc3545;");
@@ -111,16 +132,14 @@ export function errorDecor_text(target) {
 export function errorScoreController() {
     for (var i = 0; i < wrongConvertString.length; i++) {
         var errorElement = document.querySelector(".form-check-label#" + wrongConvertString[i]);
-        var onclickVal = errorElement.getAttributeNode("onclick");
-        onclickVal.value += "; errorDecor_text(this)";
+        errorElement.addEventListener('click', (event) => errorDecor_text(event.target));
         errorElement.click();
-        onclickVal.value = "getColumnIndex(this); changeScoring(this)";
+        errorElement.removeEventListener('click', (event) => errorDecor_text(event.target));
     }
     for (var i = 0; i < wrongConvertNumber.length; i++) {
         var errorElement = document.querySelector(".form-check-label#" + wrongConvertNumber[i]);
-        var onclickVal = errorElement.getAttributeNode("onclick");
-        onclickVal.value += "; errorDecor_text(this)";
+        errorElement.addEventListener('click', (event) => errorDecor_text(event.target));
         errorElement.click();
-        onclickVal.value = "getColumnIndex(this); changeScoring(this)";
+        errorElement.removeEventListener('click', (event) => errorDecor_text(event.target));
     }
 }

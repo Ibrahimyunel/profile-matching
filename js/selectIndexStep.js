@@ -2,11 +2,12 @@ import { autoDisableCheckbox } from "./preprocessSupport.js";
 import { getActiveColumn } from "./activeColumnStep.js";
 import { removeScoreWraper } from "./convertDataStep.js";
 import { newData, columnsName } from "./main.js";
+import { changeScoring } from "./convertDataStep.js";
 
 export function disableIndex(e) {
     const cancelIndex = document.querySelector("#form_check > input[aria-disabled]");
     if (cancelIndex !== null) {
-        cancelIndex.nextElementSibling.setAttribute("onclick", "getColumnIndex(this); changeScoring(this)");
+        cancelIndex.nextElementSibling.addEventListener('click', changeScoring);
         cancelIndex.checked = true;
         cancelIndex.setAttribute("checked", true);
         cancelIndex.removeAttribute("disabled");
@@ -18,7 +19,7 @@ export function disableIndex(e) {
     selectIndex.removeAttribute("checked");
     selectIndex.setAttribute("disabled", true);
     selectIndex.setAttribute("aria-disabled", true);
-    selectIndex.nextElementSibling.removeAttribute("onclick");
+    selectIndex.nextElementSibling.removeEventListener('click', changeScoring);
 
     autoDisableCheckbox(newData, columnsName);
     getActiveColumn();

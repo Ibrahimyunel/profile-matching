@@ -70,20 +70,26 @@ export function showListValue(e) {
         e.target.classList.add("btn-outline-secondary");
         for (var col = 0; col < newData[indexChoice].length; col++) {
             if (newData[indexChoice][col] === null) continue;
+
             const listValue = document.createElement('div');
             listValue.setAttribute('class', 'convert-wrapper');
             listValue.setAttribute('id', 'score_wrapper_' + columnsName[indexChoice]);
-            const convertInput = document.createElement("input");
+
+            const convertInput = document.createElement('input');
             convertInput.setAttribute('type', 'number');
             convertInput.setAttribute('class', 'form-control convert-input');
             convertInput.setAttribute('id', newData[indexChoice][col]);
             convertInput.setAttribute('placeholder', 'Score');
             convertInput.setAttribute('value', arrScore[indexChoice][col]);
-            convertInput.addEventListener('change', getScore);
+            convertInput.addEventListener("change", getScore);
+            
+            const convertLabel = document.createElement('label');
+            convertLabel.setAttribute('class', 'col-form-label');
+            convertLabel.setAttribute('for', newData[indexChoice][col]);
+            convertLabel.appendChild(document.createTextNode(newData[indexChoice][col]));
 
             listValue.appendChild(convertInput);
-            
-            listValue.innerHTML += "<label class='col-form-label' for='" + newData[indexChoice][col] + "'>" + newData[indexChoice][col] + "</label>";
+            listValue.appendChild(convertLabel);
 
             document.getElementById('wrapper_for_' + columnsName[indexChoice]).appendChild(listValue);
         }
@@ -103,19 +109,21 @@ export function showListValue(e) {
 
 export function createScoreWrapper() {
     for (var i = 0; i < columnsName.length; i++) {
-        var wrap = document.createElement('div');
+        const wrap = document.createElement('div');
         wrap.setAttribute('class', 'wrapper-for-' + columnsName[i]);
         wrap.setAttribute('id', 'wrapper_for_' + columnsName[i]);
         wrap.setAttribute('style', 'display: none;');
+
         var addstr = "";
         if (columnsName[i].length > 25) addstr = "...";
-        var buttonChange = document.createElement('button');
+
+        const buttonChange = document.createElement('button');
         buttonChange.setAttribute('class', 'btn btn-outline-primary btn-lg d-block mx-auto my-4');
         buttonChange.setAttribute('id', 'button_' + columnsName[i]);
         buttonChange.addEventListener('click', showListValue);
         buttonChange.innerHTML = "Open Convert Data of " + columnsName[i].substr(0, 25) + addstr + " Column";
-        wrap.appendChild(buttonChange);
 
+        wrap.appendChild(buttonChange);
         container_score.appendChild(wrap);
     }
 }

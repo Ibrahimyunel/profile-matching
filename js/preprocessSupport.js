@@ -53,5 +53,4 @@ export function pickDataOnce(arr) {
 export var indexChoice;
 export function getColumnIndex(e) {
     indexChoice = [].slice.call(e.target.parentNode.parentNode.children).indexOf(e.target.parentNode) - 1;
-    // return indexChoice;
 }
