@@ -3,16 +3,14 @@ import { disableIndex } from "../js/selectIndexStep.js";
 
 export const card_criteriaTotal = document.getElementById('card_criteriaTotal');
 export const card_columnList = document.getElementById('card_columnList');
-const criteria_wrapper = document.getElementById('criteria_wrapper');
 export const criteria_rules = document.getElementById('criteria_rules');
 export const criteria_total = document.getElementById('criteria_total');
+const criteria_wrapper = document.getElementById('criteria_wrapper');
+const list_of_column = document.getElementById('list_of_column');
 
 export function showColumnList() {
-  const list = document.createElement('div');
-  list.setAttribute('class', 'list-group list-group-horizontal list-criteria lc-pt');
-  list.setAttribute('id', 'list_of_column');
-  list.addEventListener('drop', drop);
-  list.addEventListener('dragover', allowDrop);
+  list_of_column.addEventListener('drop', dropList);
+  list_of_column.addEventListener('dragover', allowDrop);
 
   for (var i = 0; i < checkedTrue.length; i++) {
     var addstr = "";
@@ -25,27 +23,41 @@ export function showColumnList() {
     listItem.addEventListener('dragstart', dragStart);
     listItem.appendChild(document.createTextNode(checkedTrue[i].substr(0, 25) + addstr));
 
-    list.appendChild(listItem);
+    list_of_column.appendChild(listItem);
   }
-  card_columnList.lastElementChild.appendChild(list);
 }
 
 export function updateColumnList() {
-  for (var b = 0; b < checkedTrue.length; b++) {
-    const getli = document.querySelector("p#list_" + checkedTrue[b]);
-    const getParentli = document.getElementById("list_of_column");
-    if (getli === null) {
+  const listItemCriteria = document.querySelectorAll('p.list-group-item');
+  var listItemCriteriaId = [];
+  for (let i = 0; i < listItemCriteria.length; i++) {
+    listItemCriteriaId.push(listItemCriteria[i].id.slice(5));
+  }
+
+  for (let i = 0; i < listItemCriteriaId.length; i++) {
+    if (!checkedTrue.includes(listItemCriteriaId[i])) {
+      if (listItemCriteria[i].previousSibling.id !== undefined) {
+        if (listItemCriteria[i].previousSibling.id.includes('list_group_criteria_')) {
+          listItemCriteria[i].previousSibling.remove();
+        }
+      }
+      listItemCriteria[i].remove();
+    }
+  }
+
+  for (let i = 0; i < checkedTrue.length; i++) {
+    if (!listItemCriteriaId.includes(checkedTrue[i])) {
       var addstr = "";
-      if (checkedTrue[b].length > 25) addstr = "...";
+      if (checkedTrue[i].length > 25) addstr = "...";
       const addlist = document.createElement('p');
       addlist.setAttribute('class', 'list-group-item text-center bc pd');
-      addlist.setAttribute('id', `list_${checkedTrue[b]}`);
+      addlist.setAttribute('id', `list_${checkedTrue[i]}`);
       addlist.setAttribute('draggable', true);
       addlist.addEventListener('drop', unallowDrop);
       addlist.addEventListener('dragstart', dragStart);
-      addlist.appendChild(checkedTrue[b].substr(0, 25) + addstr);
+      addlist.appendChild(document.createTextNode(checkedTrue[i].substr(0, 25) + addstr));
 
-      getParentli.appendChild(addlist);
+      list_of_column.insertBefore(addlist, list_of_column.firstChild);
     }
   }
 }
@@ -64,9 +76,9 @@ export function showCriteriaCard(e) {
   criteria_rules.style.display = 'block';
   if (oldVal > e.target.value) {
     for (var i = oldVal; i > e.target.value; i--) {
-      var cancelList = document.querySelectorAll(`#list_group_criteria_${i - 1} > p`);
+      const cancelList = document.querySelectorAll(`#list_group_criteria_${i - 1} > p`);
       for (var b = 0; b < cancelList.length; b++) {
-        card_columnList.lastElementChild.firstChild.appendChild(cancelList[b]);
+        list_of_column.appendChild(cancelList[b]);
       }
       document.getElementById(`criteria_${i - 1}`).remove();
     }
@@ -110,7 +122,7 @@ function listCriteria(e) {
   selectFactor.addEventListener('drop', unallowDrop);
 
   let arrOption = ["Core Factor", "Secondary Factor"];
-  for(let i = 0; i < arrOption.length; i++) {
+  for (let i = 0; i < arrOption.length; i++) {
     const listOption = document.createElement('option');
     listOption.setAttribute('value', arrOption[i]);
     listOption.appendChild(document.createTextNode(arrOption[i]));
@@ -130,7 +142,7 @@ function listCriteria(e) {
   targetS_factor.appendChild(inputTargetScore);
 
   e.target.appendChild(targetS_factor);
-  drop(e);
+  dropList(e);
 }
 
 var list_id, prevSibling_id;
@@ -143,7 +155,7 @@ function dragStart(e) {
   }
 }
 
-function drop(e) {
+function dropList(e) {
   e.target.appendChild(document.getElementById(list_id));
   removeDiv();
 }
